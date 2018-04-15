@@ -1,14 +1,20 @@
 package ru.nt202.smiles2048.model;
 
 public class SmileBuilder {
+    private boolean isMovable;
     private int currentName;
     private int currentRow;
     private int currentColumn;
     private int destinationName;
     private int destinationRow;
     private int destinationColumn;
-    private boolean fade;
-    private boolean appear;
+    private boolean isFade;
+    private boolean isAppear;
+
+    public SmileBuilder setIsMovable(boolean isMovable) {
+        this.isMovable = isMovable;
+        return this;
+    }
 
     public SmileBuilder setCurrentName(int currentName) {
         this.currentName = currentName;
@@ -40,17 +46,17 @@ public class SmileBuilder {
         return this;
     }
 
-    public SmileBuilder setFade(boolean fade) {
-        this.fade = fade;
+    public SmileBuilder setIsFade(boolean isFade) {
+        this.isFade = isFade;
         return this;
     }
 
-    public SmileBuilder setAppear(boolean appear) {
-        this.appear = appear;
+    public SmileBuilder setIsAppear(boolean isAppear) {
+        this.isAppear = isAppear;
         return this;
     }
 
     public Smile createSmile() {
-        return new Smile(currentName, currentRow, currentColumn, destinationName, destinationRow, destinationColumn, fade, appear);
+        return new Smile(isMovable, currentName, currentRow, currentColumn, destinationName, destinationRow, destinationColumn, isFade, isAppear);
     }
 }

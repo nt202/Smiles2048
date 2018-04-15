@@ -1,7 +1,5 @@
 package ru.nt202.smiles2048.presenter;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 import ru.nt202.smiles2048.model.GameModel;
@@ -40,6 +38,6 @@ public class GamePresenter {
     public void update() {
         model.updateModel(MotionHelper.getDirection());
         ArrayList<Smile> smiles = model.getSmiles();
-        view.redraw(smiles);
+        view.animateSmiles(smiles);
     }
 }

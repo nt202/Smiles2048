@@ -21,7 +21,7 @@
             android:layout_row="0"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/ic_2" />
+            tools:src="@drawable/ic_2"/>
 
         <ImageView
             android:id="@+id/square1"
@@ -31,7 +31,7 @@
             android:layout_row="0"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/ic_4" />
+            tools:src="@drawable/ic_4" />
 
         <ImageView
             android:id="@+id/square2"
@@ -41,7 +41,7 @@
             android:layout_row="0"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/ic_8" />
+            tools:src="@drawable/ic_8" />
 
         <ImageView
             android:id="@+id/square3"
@@ -51,7 +51,7 @@
             android:layout_row="0"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/ic_16" />
+            tools:src="@drawable/ic_16" />
 
         <ImageView
             android:id="@+id/square4"
@@ -61,7 +61,7 @@
             android:layout_row="1"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/ic_32" />
+            tools:src="@drawable/ic_32" />
 
         <ImageView
             android:id="@+id/square5"
@@ -71,7 +71,7 @@
             android:layout_row="1"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/ic_64" />
+            tools:src="@drawable/ic_64" />
 
         <ImageView
             android:id="@+id/square6"
@@ -81,7 +81,7 @@
             android:layout_row="1"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/ic_128" />
+            tools:src="@drawable/ic_128" />
 
         <ImageView
             android:id="@+id/square7"
@@ -91,7 +91,7 @@
             android:layout_row="1"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/ic_256" />
+            tools:src="@drawable/ic_256" />
 
         <ImageView
             android:id="@+id/square8"
@@ -101,7 +101,7 @@
             android:layout_row="2"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/ic_512" />
+            tools:src="@drawable/ic_512" />
 
         <ImageView
             android:id="@+id/square9"
@@ -111,7 +111,7 @@
             android:layout_row="2"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/ic_1024" />
+            tools:src="@drawable/ic_1024" />
 
         <ImageView
             android:id="@+id/square10"
@@ -121,7 +121,7 @@
             android:layout_row="2"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/ic_2048" />
+            tools:src="@drawable/ic_2048" />
 
         <ImageView
             android:id="@+id/square11"
@@ -131,7 +131,7 @@
             android:layout_row="2"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/ic_4096" />
+            tools:src="@drawable/ic_4096" />
 
         <ImageView
             android:id="@+id/square12"
@@ -141,7 +141,7 @@
             android:layout_row="3"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/ic_8192" />
+            tools:src="@drawable/ic_8192" />
 
         <ImageView
             android:id="@+id/square13"
@@ -151,7 +151,7 @@
             android:layout_row="3"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/ic_16384" />
+            tools:src="@drawable/ic_16384" />
 
         <ImageView
             android:id="@+id/square14"
@@ -161,7 +161,7 @@
             android:layout_row="3"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/ic_32768" />
+            tools:src="@drawable/ic_32768" />
 
         <ImageView
             android:id="@+id/square15"
@@ -171,9 +171,8 @@
             android:layout_row="3"
             android:layout_columnWeight="1"
             android:layout_rowWeight="1"
-            android:src="@drawable/ic_65536" />
+            tools:src="@drawable/ic_65536" />
 
     </GridLayout>
-
 
 </android.support.constraint.ConstraintLayout>

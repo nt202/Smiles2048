@@ -14,21 +14,21 @@ class GameField {
     private static int[][] current; // current's combinations
     private static int[][] shifts; // how many shifts current's smiles should do to destination
     private static int[][] destinations; // destinations smile's names
-    private static boolean[][] appearance; // appeared smile
+    private static int[][] appearance; // appeared smile
 
     GameField() {
         smiles = new ArrayList<>(MAX_ROWS * MAX_COLUMNS);
         current = new int[MAX_ROWS][MAX_COLUMNS];
         shifts = new int[MAX_ROWS][MAX_COLUMNS];
         destinations = new int[MAX_ROWS][MAX_COLUMNS];
-        appearance = new boolean[MAX_ROWS][MAX_COLUMNS];
+        appearance = new int[MAX_ROWS][MAX_COLUMNS];
         addNewNumber(); // initialization
     }
 
     ArrayList<Smile> move(Direction direction) {
         GameField.direction = direction;
-        clearArrays();
         putDestinationsToCurrent();
+        clearArrays();
         switch (direction) {
             case UP:
                 calculateMoveUp();
@@ -46,7 +46,7 @@ class GameField {
                 return smiles;
         }
         calculateDifference(); // set isMoved
-        if (isMoved) addNewNumber();
+//        if (isMoved) addNewNumber();
         addNewNumber();
 //        calculateGameOver(); // set isGameOver
 //        if (isGameOver) return null;
@@ -66,13 +66,19 @@ class GameField {
 
     private void clearArrays() {
         shifts = new int[MAX_ROWS][MAX_COLUMNS];
-        appearance = new boolean[MAX_ROWS][MAX_COLUMNS];
+        appearance = new int[MAX_ROWS][MAX_COLUMNS];
     }
 
     private void putDestinationsToCurrent() {
         for (int i = 0; i < MAX_ROWS; i++) {
             System.arraycopy(destinations[i], 0, current[i], 0, MAX_COLUMNS);
         }
+//        for (int i = 0; i < MAX_ROWS; i++) {
+//            for (int j = 0; j < MAX_COLUMNS; j++) {
+//                current[i][j] = destinations[i][j];
+//                if (appearance[i][j] != 0) current[i][j] = appearance[i][j];
+//            }
+//        }
     }
 
     private void calculateMoveLeft() {
@@ -247,10 +253,10 @@ class GameField {
             if (destinations[i][j] == 0) {
                 if (Math.random() <= 0.8) {
                     destinations[i][j] = 2;
-                    appearance[i][j] = true;
+                    appearance[i][j] = 2;
                 } else {
                     destinations[i][j] = 4;
-                    appearance[i][j] = true;
+                    appearance[i][j] = 4;
                 }
                 break;
             }
@@ -275,14 +281,15 @@ class GameField {
         for (int i = 0; i < MAX_ROWS; i++) {
             for (int j = 0; j < MAX_COLUMNS; j++) {
                 Smile smile = new SmileBuilder()
+                        .setIsMovable(isMovable(i, j))
                         .setCurrentName(current[i][j])
                         .setCurrentRow(i)
                         .setCurrentColumn(j)
-                        .setDestinationName(destinations[i][j])
-                        .setDestinationRow(calculateDestinationRow(i, shifts[i][j]))
-                        .setDestinationColumn(calculateDestinationColumn(j, shifts[i][j]))
-                        .setFade(doFade(i, j))
-                        .setAppear(doAppearance(i, j))
+                        .setDestinationName(calculateDestinationName(i, j))
+                        .setDestinationRow(calculateDestinationRow(i, j))
+                        .setDestinationColumn(calculateDestinationColumn(i, j))
+                        .setIsFade(isFade(i, j))
+                        .setIsAppear(isAppear(i, j))
                         .createSmile();
                 smiles.add(counter, smile);
                 counter++;
@@ -290,17 +297,31 @@ class GameField {
         }
     }
 
-    private int calculateDestinationRow(int i, int value) {
+    private boolean isMovable(int i, int j) {
+        return shifts[i][j] != 0;
+    }
+
+    private int calculateDestinationName(int i, int j) {
+//        if (appearance[i][j] != 0) return appearance[i][j];
+        int i1 = calculateDestinationRow(i, j);
+        int j1 = calculateDestinationColumn(i, j);
+        return destinations[i1][j1];
+    }
+
+
+    private int calculateDestinationRow(int i, int j) {
+        int value = shifts[i][j];
         switch (direction) {
             case UP:
-                return i + value;
-            case DOWN:
                 return i - value;
+            case DOWN:
+                return i + value;
         }
         return i;
     }
 
-    private int calculateDestinationColumn(int j, int value) {
+    private int calculateDestinationColumn(int i, int j) {
+        int value = shifts[i][j];
         switch (direction) {
             case LEFT:
                 return j - value;
@@ -310,12 +331,36 @@ class GameField {
         return j;
     }
 
-    private boolean doFade(int i, int j) {
-        if (destinations[i][j] == 0 && current[i][j] != 0) return true;
+    private boolean isFade(int i, int j) {
+        if (current[i][j] != 0) {
+            int i1 = calculateDestinationRow(i, j);
+            int j1 = calculateDestinationColumn(i, j);
+            if (destinations[i1][j1] > current[i][j]) {
+//                if (isMovable(i, j)) {
+//                    switch (direction) {
+//                        case UP:
+//                            if (i > 0) return !isMovable(i - 1, j);
+//                            break;
+//                        case DOWN:
+//                            if (i < 3) return !isMovable(i + 1, j);
+//                            break;
+//                        case LEFT:
+//                            if (j > 0) return !isMovable(i, j - 1);
+//                            break;
+//                        case RIGHT:
+//                            if (j < 3) return !isMovable(i, j + 1);
+//                            break;
+//                    }
+//                } else {
+//                    return true;
+//                }
+                return true;
+            }
+        }
         return false;
     }
 
-    private boolean doAppearance(int i, int j) {
-        return appearance[i][j];
+    private boolean isAppear(int i, int j) {
+        return appearance[i][j] != 0;
     }
 }
