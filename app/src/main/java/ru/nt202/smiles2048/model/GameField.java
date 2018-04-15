@@ -308,7 +308,6 @@ class GameField {
         return destinations[i1][j1];
     }
 
-
     private int calculateDestinationRow(int i, int j) {
         int value = shifts[i][j];
         switch (direction) {
@@ -336,25 +335,125 @@ class GameField {
             int i1 = calculateDestinationRow(i, j);
             int j1 = calculateDestinationColumn(i, j);
             if (destinations[i1][j1] > current[i][j]) {
-//                if (isMovable(i, j)) {
-//                    switch (direction) {
-//                        case UP:
-//                            if (i > 0) return !isMovable(i - 1, j);
-//                            break;
-//                        case DOWN:
-//                            if (i < 3) return !isMovable(i + 1, j);
-//                            break;
-//                        case LEFT:
-//                            if (j > 0) return !isMovable(i, j - 1);
-//                            break;
-//                        case RIGHT:
-//                            if (j < 3) return !isMovable(i, j + 1);
-//                            break;
-//                    }
-//                } else {
-//                    return true;
-//                }
-                return true;
+                // Далее очень сложная логика, даже не пытайтесь понять.
+                switch (direction) {
+                    case UP:
+                        if (i == 0) return true;
+                        if (i < MAX_ROWS - 1) {
+                            boolean isOdd = false;
+                            for (int row = 0; row < i; row++) {
+                                if (current[row][j] == 0) continue;
+                                if (current[row][j] == current[i][j]) {
+                                    int i2 = calculateDestinationRow(row, j);
+                                    if (destinations[i2][j] == destinations[i1][j]) {
+                                        isOdd = !isOdd;
+                                    }
+                                } else {
+                                    isOdd = false;
+                                }
+                            }
+                            if (isOdd) {
+                                return false;
+                            } else {
+                                for (int row = i + 1; row <= MAX_ROWS - 1; row++) {
+                                    if (current[row][j] == 0) continue;
+                                    if (current[row][j] == current[i][j]) {
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                            }
+                        } else {
+                            return false;
+                        }
+                    case DOWN:
+                        if (i == MAX_ROWS - 1) return true;
+                        if (i > 0) {
+                            boolean isOdd = false;
+                            for (int row = MAX_ROWS - 1; row > i; row--) {
+                                if (current[row][j] == 0) continue;
+                                if (current[row][j] == current[i][j]) {
+                                    int i2 = calculateDestinationRow(row, j);
+                                    if (destinations[i2][j] == destinations[i1][j]) {
+                                        isOdd = !isOdd;
+                                    }
+                                } else {
+                                    isOdd = false;
+                                }
+                            }
+                            if (isOdd) {
+                                return false;
+                            } else {
+                                for (int row = i - 1; row >= 0; row--) {
+                                    if (current[row][j] == 0) continue;
+                                    if (current[row][j] == current[i][j]) {
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                            }
+                        } else {
+                            return false;
+                        }
+                    case LEFT:
+                        if (j == 0) return true;
+                        if (j < MAX_COLUMNS - 1) {
+                            boolean isOdd = false;
+                            for (int column = 0; column < j; column++) {
+                                if (current[i][column] == 0) continue;
+                                if (current[i][column] == current[i][j]) {
+                                    int j2 = calculateDestinationColumn(i, column);
+                                    if (destinations[i][j2] == destinations[i][j1]) {
+                                        isOdd = !isOdd;
+                                    }
+                                } else {
+                                    isOdd = false;
+                                }
+                            }
+                            if (isOdd) {
+                                return false;
+                            } else {
+                                for (int column = j + 1; column <= MAX_ROWS - 1; column++) {
+                                    if (current[i][column] == 0) continue;
+                                    if (current[i][column] == current[i][j]) {
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                            }
+                        } else {
+                            return false;
+                        }
+                    case RIGHT:
+                        if (j == MAX_COLUMNS - 1) return true;
+                        if (j > 0) {
+                            boolean isOdd = false;
+                            for (int column = MAX_COLUMNS - 1; column > j; column--) {
+                                if (current[i][column] == 0) continue;
+                                if (current[i][column] == current[i][j]) {
+                                    int j2 = calculateDestinationColumn(i, column);
+                                    if (destinations[i][j2] == destinations[i][j1]) {
+                                        isOdd = !isOdd;
+                                    }
+                                } else {
+                                    isOdd = false;
+                                }
+                            }
+                            if (isOdd) {
+                                return false;
+                            } else {
+                                for (int column = j - 1; column >= 0; column--) {
+                                    if (current[i][column] == 0) continue;
+                                    if (current[i][column] == current[i][j]) {
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                            }
+                        } else {
+                            return false;
+                        }
+                }
             }
         }
         return false;

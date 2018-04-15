@@ -25,8 +25,8 @@ public class Smile {
     private boolean isMoveable;
     private boolean isFade;
     private boolean isAppear;
-    private static final long DURATION_MOVE = 4000; // milliseconds
-    private static final long DURATION_ALPHA = 4000; // milliseconds
+    private static final long DURATION_MOVE = 500; // milliseconds
+    private static final long DURATION_ALPHA = 300; // milliseconds
 
     public Smile(boolean isMoveable,
                  int currentName,
@@ -88,7 +88,7 @@ public class Smile {
             if (isFade) {
                 setImageView(currentName);
                 alphaAnimation = ObjectAnimator.ofFloat(imageView, View.ALPHA, 1.0f, 0.0f);
-                alphaAnimation.setDuration(DURATION_ALPHA - 300);
+                alphaAnimation.setDuration(DURATION_ALPHA);
             }
 //            if (isAppear) {
 //                setImageView(destinationName);
