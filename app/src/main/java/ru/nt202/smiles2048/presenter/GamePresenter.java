@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import ru.nt202.smiles2048.model.GameModel;
 import ru.nt202.smiles2048.model.MotionHelper;
-import ru.nt202.smiles2048.model.Smile;
+import ru.nt202.smiles2048.view.Smile;
 import ru.nt202.smiles2048.view.GameActivity;
 
 public class GamePresenter {
@@ -38,6 +38,8 @@ public class GamePresenter {
     public void update() {
         model.updateModel(MotionHelper.getDirection());
         ArrayList<Smile> smiles = model.getSmiles();
-        view.animateSmiles(smiles);
+        if (smiles != null) {
+            view.animateSmiles(smiles);
+        }
     }
 }

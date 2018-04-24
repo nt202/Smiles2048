@@ -3,14 +3,15 @@ package ru.nt202.smiles2048.model;
 import java.util.ArrayList;
 import java.util.Random;
 
+import ru.nt202.smiles2048.view.Smile;
+
+import static ru.nt202.smiles2048.utils.AppConfig.MAX_COLUMNS;
+import static ru.nt202.smiles2048.utils.AppConfig.MAX_ROWS;
+
 class GameField {
 
     private static ArrayList<Smile> smiles;
     private static Direction direction;
-    private static boolean isGameOver = false;
-    private static boolean isMoved = false;
-    private static final int MAX_ROWS = 4;
-    private static final int MAX_COLUMNS = 4;
     private static int[][] current; // current's combinations
     private static int[][] shifts; // how many shifts current's smiles should do to destination
     private static int[][] destinations; // destinations smile's names
@@ -22,7 +23,9 @@ class GameField {
         shifts = new int[MAX_ROWS][MAX_COLUMNS];
         destinations = new int[MAX_ROWS][MAX_COLUMNS];
         appearance = new int[MAX_ROWS][MAX_COLUMNS];
-        addNewNumber(); // initialization
+        // initialization 2 numbers:
+        addNewNumber();
+        addNewNumber();
     }
 
     ArrayList<Smile> move(Direction direction) {
@@ -43,16 +46,22 @@ class GameField {
                 calculateMoveRight();
                 break;
             case NONE:
+                createGameField();
                 return smiles;
         }
-        calculateDifference(); // set isMoved
-//        if (isMoved) addNewNumber();
-        addNewNumber();
-//        calculateGameOver(); // set isGameOver
-//        if (isGameOver) return null;
-        createGameField(); // set smiles
-        showField(current, shifts, destinations);
-        return smiles;
+        if (isMoveHappened()) {
+            addNewNumber();
+        } else {
+            return null;
+        }
+        if (isGameOver()) {
+            System.out.println("GAME OVER");
+            return smiles;
+        } else {
+            createGameField();
+            showField(current, shifts, destinations);
+            return smiles;
+        }
     }
 
     private static void showField(int arr1[][], int arr2[][], int arr3[][]) {
@@ -73,12 +82,6 @@ class GameField {
         for (int i = 0; i < MAX_ROWS; i++) {
             System.arraycopy(destinations[i], 0, current[i], 0, MAX_COLUMNS);
         }
-//        for (int i = 0; i < MAX_ROWS; i++) {
-//            for (int j = 0; j < MAX_COLUMNS; j++) {
-//                current[i][j] = destinations[i][j];
-//                if (appearance[i][j] != 0) current[i][j] = appearance[i][j];
-//            }
-//        }
     }
 
     private void calculateMoveLeft() {
@@ -215,34 +218,34 @@ class GameField {
         }
     }
 
-    private void calculateDifference() {
+    private boolean isMoveHappened() {
         for (int i = 0; i < MAX_ROWS; i++) {
             for (int j = 0; j < MAX_COLUMNS; j++) {
                 if (destinations[i][j] != current[i][j]) {
-                    isMoved = true;
+                    return true;
                 }
             }
         }
-        isMoved = false;
+        return false;
     }
 
-    private void calculateGameOver() {
+    private boolean isGameOver() {
         for (int i = 0; i < MAX_ROWS; i++) {
             for (int j = 0; j < MAX_COLUMNS; j++) {
-                if (destinations[i][j] == 0) isGameOver = false;
+                if (destinations[i][j] == 0) return false;
             }
         }
         for (int i = 0; i < MAX_ROWS; i++) {
             for (int j = 0; j < MAX_COLUMNS - 1; j++) {
-                if (destinations[i][j] == destinations[i][j + 1]) isGameOver = false;
+                if (destinations[i][j] == destinations[i][j + 1]) return false;
             }
         }
         for (int i = 0; i < MAX_ROWS - 1; i++) {
             for (int j = 0; j < MAX_COLUMNS; j++) {
-                if (destinations[i][j] == destinations[i + 1][j]) isGameOver = false;
+                if (destinations[i][j] == destinations[i + 1][j]) return false;
             }
         }
-        isGameOver = true;
+        return true;
     }
 
     private void addNewNumber() {
@@ -268,7 +271,6 @@ class GameField {
                     if (destinations[i][j] == 0) {
                         addNewNumber();
                     } else {
-                        isGameOver = true;
                         break;
                     }
                 }
@@ -276,22 +278,38 @@ class GameField {
         }
     }
 
+    // Further method relates with Smile setters:
     private void createGameField() {
         int counter = 0;
         for (int i = 0; i < MAX_ROWS; i++) {
             for (int j = 0; j < MAX_COLUMNS; j++) {
-                Smile smile = new SmileBuilder()
-                        .setIsMovable(isMovable(i, j))
-                        .setCurrentName(current[i][j])
-                        .setCurrentRow(i)
-                        .setCurrentColumn(j)
-                        .setDestinationName(calculateDestinationName(i, j))
-                        .setDestinationRow(calculateDestinationRow(i, j))
-                        .setDestinationColumn(calculateDestinationColumn(i, j))
-                        .setIsFade(isFade(i, j))
-                        .setIsAppear(isAppear(i, j))
-                        .createSmile();
-                smiles.add(counter, smile);
+                Smile smile;
+                if (smiles.size() < MAX_ROWS * MAX_COLUMNS) {
+                    smile = new Smile();
+                } else {
+                    smile = smiles.get(counter);
+                }
+                smile.setSquareNumber(counter);
+                smile.setMovable(isMovable(i, j));
+                smile.setBlast(isBlast(i, j));
+                smile.setCurrentName(current[i][j]);
+                smile.setCurrentRow(i);
+                smile.setCurrentColumn(j);
+                smile.setDestinationName(calculateDestinationName(i, j));
+                smile.setDestinationRow(calculateDestinationRow(i, j));
+                smile.setDestinationColumn(calculateDestinationColumn(i, j));
+                smile.setFade(isFade(i, j));
+                if (isAppear(i, j)) {
+                    smile.setAppear(true);
+                    smile.setAppearDestinationName(calculateAppearDestinationName(i, j));
+                    smile.setAppearDestinationRow(i);
+                    smile.setAppearDestinationColumn(j);
+                } else {
+                    smile.setAppear(false);
+                }
+                if (smiles.size() < MAX_ROWS * MAX_COLUMNS) {
+                    smiles.add(smile);
+                }
                 counter++;
             }
         }
@@ -301,8 +319,16 @@ class GameField {
         return shifts[i][j] != 0;
     }
 
+    private boolean isBlast(int i, int j) {
+        if (isMovable(i, j)) {
+            if (calculateDestinationName(i, j) > current[i][j]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private int calculateDestinationName(int i, int j) {
-//        if (appearance[i][j] != 0) return appearance[i][j];
         int i1 = calculateDestinationRow(i, j);
         int j1 = calculateDestinationColumn(i, j);
         return destinations[i1][j1];
@@ -461,5 +487,9 @@ class GameField {
 
     private boolean isAppear(int i, int j) {
         return appearance[i][j] != 0;
+    }
+
+    private int calculateAppearDestinationName(int i, int j) {
+        return appearance[i][j];
     }
 }

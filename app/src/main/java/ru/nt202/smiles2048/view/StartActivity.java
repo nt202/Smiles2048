@@ -14,8 +14,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     @BindView(R.id.start_start)
     Button buttonStart;
-    @BindView(R.id.start_records)
-    Button buttonRecords;
     @BindView(R.id.start_quit)
     Button buttonQuit;
 
@@ -25,7 +23,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_start);
         ButterKnife.bind(this);
         buttonStart.setOnClickListener(this);
-        buttonRecords.setOnClickListener(this);
         buttonQuit.setOnClickListener(this);
     }
 
@@ -34,9 +31,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.start_start:
                 startActivity(new Intent(this, GameActivity.class));
-                break;
-            case R.id.start_records:
-                startActivity(new Intent(this, RecordsActivity.class));
                 break;
             case R.id.start_quit:
                 finish();

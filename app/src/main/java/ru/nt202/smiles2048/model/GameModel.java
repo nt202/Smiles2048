@@ -2,6 +2,8 @@ package ru.nt202.smiles2048.model;
 
 import java.util.ArrayList;
 
+import ru.nt202.smiles2048.view.Smile;
+
 public class GameModel {
     private static final GameModel ourInstance = new GameModel();
 
